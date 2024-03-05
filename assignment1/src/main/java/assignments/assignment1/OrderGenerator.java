@@ -24,7 +24,50 @@ public class OrderGenerator {
         System.out.println("2. Generate Bill");
         System.out.println("3. Keluar");
     }
+    public static String calculateChecksum(String orderId) {
+        int checksum1 = 0;
+        int checksum2 = 0;
+        // Menghitung checksum
+        for (int i = 0; i < orderId.length(); i++) {
+            // Mengecek apakah posisi karakter ganjil atau genap
+            if (i % 2 == 0) {
+                // Jika karakter adalah sebuah digit maka langsung tambahkan ke checksum
+                if (Character.isDigit(orderId.charAt(i))) {
+                    checksum1 += Character.getNumericValue(orderId.charAt(i));
+                } else { // Jika bukan digit maka perlu menghitung karakter sesuai dengan code 39
+                    int codeChar = 10 + (orderId.charAt(i) - 'A');
+                    checksum1 += codeChar;
+                }
+            } else {
+                if (Character.isDigit(orderId.charAt(i))) {
+                    checksum2 += Character.getNumericValue(orderId.charAt(i));
+                } else {
+                    int codeChar = 10 + (orderId.charAt(i) - 'A');
+                    checksum2 += codeChar;
+                }
+            }
+        }
+        
+        String checksum = "";
+        // Menghitung modulo 36 dari checksum
+        int sisaChecksum1 = checksum1 % 36;
+        // Menambahkan checksum ke ID pesanan 
+        if (sisaChecksum1 < 10) {
+            checksum += Integer.toString(sisaChecksum1);
+        } else { // Reverse assignment ke dalam code 39 character set
+            checksum += (char) ('A' + (sisaChecksum1 - 10));
+        }
 
+        int sisaChecksum2 = checksum2 % 36;
+        if (sisaChecksum2 < 10) {
+            checksum += Integer.toString(sisaChecksum2);
+        } else {
+            checksum += (char) ('A' + (sisaChecksum2 - 10));
+        }
+        // Mengembalikan checksum
+        return checksum;
+    }
+    
     /*
      * Method ini digunakan untuk membuat ID
      * dari nama restoran, tanggal order, dan nomor telepon
@@ -68,44 +111,9 @@ public class OrderGenerator {
 
         // Membuat 14 karakter pertama ID pesanan
         orderId = idNamaRestoran.substring(0, 4) + idTanggal + strIdTelepon;
-        int checksum1 = 0;
-        int checksum2 = 0;
-        // Menghitung checksum
-        for (int i = 0; i < orderId.length(); i++) {
-            // Mengecek apakah posisi karakter ganjil atau genap
-            if (i % 2 == 0) {
-                // Jika karakter adalah sebuah digit maka langsung tambahkan ke checksum
-                if (Character.isDigit(orderId.charAt(i))) {
-                    checksum1 += Character.getNumericValue(orderId.charAt(i));
-                } else { // Jika bukan digit maka perlu menghitung karakter sesuai dengan code 39
-                    int codeChar = 10 + (orderId.charAt(i) - 'A');
-                    checksum1 += codeChar;
-                }
-            } else {
-                if (Character.isDigit(orderId.charAt(i))) {
-                    checksum2 += Character.getNumericValue(orderId.charAt(i));
-                } else {
-                    int codeChar = 10 + (orderId.charAt(i) - 'A');
-                    checksum2 += codeChar;
-                }
-            }
-        }
-        
-        // Menghitung modulo 36 dari checksum
-        int sisaChecksum1 = checksum1 % 36;
-        // Menambahkan checksum ke ID pesanan 
-        if (sisaChecksum1 < 10) {
-            orderId += Integer.toString(sisaChecksum1);
-        } else { // Reverse assignment ke dalam code 39 character set
-            orderId += (char) ('A' + (sisaChecksum1 - 10));
-        }
+        // Menambahkan checksum
+        orderId += calculateChecksum(orderId);
 
-        int sisaChecksum2 = checksum2 % 36;
-        if (sisaChecksum2 < 10) {
-            orderId += Integer.toString(sisaChecksum2);
-        } else {
-            orderId += (char) ('A' + (sisaChecksum2 - 10));
-        }
         // Mengembalikan ID pesanan
         return orderId;
     }
@@ -188,16 +196,10 @@ public class OrderGenerator {
                             break;
                         }
                     }
-                    if (allDigits && Long.parseLong(noTelpon) > -1) {
+                    if (allDigits && Long.valueOf(noTelpon) > -1) {
                         // Panggil fungsi untuk menghasilkan ID pesanan
-                        String newOrderId = generateOrderID(namaRestoran, tanggalPemesanan, noTelpon);
-                        // Jika orderId masih kosong, langsung tetapkan nilai orderId
-                        if (orderId.isEmpty()) {
-                            orderId = newOrderId;
-                        } else { // Jika sudah ada orderId sebelumnya, pisahkan dengan spasi
-                            orderId += " " + newOrderId;
-                        }
-                        System.out.println("Order ID " + newOrderId + " diterima!");
+                        orderId = generateOrderID(namaRestoran, tanggalPemesanan, noTelpon);
+                        System.out.println("Order ID " + orderId + " diterima!");
                         System.out.println("---------------------------------");
                         break;
                     } else {
@@ -216,10 +218,18 @@ public class OrderGenerator {
                         System.out.println("Order ID minimal 16 karakter\n");
                         continue;
                     // Mengecek apakah Order ID ada atau tidak dalam daftar Order ID yang telah dihasilkan
-                    } else if (!orderId.contains(order)) {
+                    } else if (!order.substring(0, 4).matches("[A-Z]{4}") || !order.substring(4, 12).matches("\\d{8}")) {
                         System.out.println("Silahkan masukkan Order ID yang valid!\n");
                         continue;
                     }
+
+                    // Mengecek apakah 2 karakter terakhir memenuhi checksum
+                    String calculatedChecksum = calculateChecksum(order.substring(0, order.length() - 2));
+                    if (!order.endsWith(calculatedChecksum) || order.length() > 16) {
+                        System.out.println("Silahkan masukkan Order ID yang valid!\n");
+                        continue;
+                    }
+
                     System.out.print("Lokasi Pengiriman: ");
                     String lokasi = input.nextLine();
                     // Menghasilkan bill berdasarkan Order ID dan lokasi pengiriman
