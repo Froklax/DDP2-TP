@@ -1,10 +1,36 @@
-package main.java.assignments.assignment2;
+package assignments.assignment2;
+import java.util.ArrayList;
 
 public class Restaurant {
-     // TODO: tambahkan attributes yang diperlukan untuk class ini
+    // Atribut class Restaurant
+    private String nama; 
+    private ArrayList<Menu> menu; 
+
+    // Constructor class Restaurant
     public Restaurant(String nama){
-        // TODO: buat constructor untuk class ini
+        this.nama = nama;
+        this.menu = new ArrayList<>();
     }
-    
-    // TODO: tambahkan methods yang diperlukan untuk class ini
+
+    @Override
+    public String toString() {
+        return "Restaurant " + getNamaRestoran() + " Berhasil terdaftar.";
+    }
+
+    // Getter dan Setter
+    public String getNamaRestoran() {
+        return this.nama;
+    }
+
+    public void setNamaRestoran(String nama) {
+        this.nama = nama;
+    }
+
+    public ArrayList<Menu> getMenu() {
+        return this.menu;
+    }
+
+    public void setMenu(ArrayList<Menu> menu) {
+        this.menu = menu;
+    }
 }
