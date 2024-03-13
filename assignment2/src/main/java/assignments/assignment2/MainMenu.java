@@ -33,7 +33,6 @@ public class MainMenu {
                 initUser();
 
                 User userLoggedIn = getUser(nama, noTelp);
-                User.setCurrentUser(userLoggedIn);
         
                 boolean isLoggedIn;
                 if (userLoggedIn != null) {
@@ -52,10 +51,10 @@ public class MainMenu {
                         input.nextLine();
 
                         switch(commandCust){
-                            case 1 -> handleBuatPesanan();
-                            case 2 -> handleCetakBill();
+                            case 1 -> handleBuatPesanan(userLoggedIn);
+                            case 2 -> handleCetakBill(userLoggedIn);
                             case 3 -> handleLihatMenu();
-                            case 4 -> handleUpdateStatusPesanan();
+                            case 4 -> handleUpdateStatusPesanan(userLoggedIn);
                             case 5 -> isLoggedIn = false;
                             default -> System.out.println("Perintah tidak diketahui, silakan coba kembali");
                         }
@@ -93,9 +92,8 @@ public class MainMenu {
         return null;
     }
 
-    public static void handleBuatPesanan(){
+    public static void handleBuatPesanan(User userLoggedIn){
         // Method untuk handle ketika customer membuat pesanan
-        User userLoggedIn = User.getCurrentUser();
         while (true) {
             System.out.print("Nama Restoran: ");
             String namaRestoran = input.nextLine();
@@ -119,7 +117,7 @@ public class MainMenu {
             String tanggalOrder = input.nextLine();
             // Mengecek format tanggal apakah sudah benar
             if (tanggalOrder.length() != 10 || tanggalOrder.charAt(2) != '/' || tanggalOrder.charAt(5) != '/') {
-                System.out.println("Masukkan tanggal sesuai format (DD/MM/YYYY!)\n");
+                System.out.println("Masukkan tanggal sesuai format (DD/MM/YYYY)!\n");
                 continue;
             }
 
@@ -167,9 +165,8 @@ public class MainMenu {
         }
     }
 
-    public static void handleCetakBill(){
+    public static void handleCetakBill(User userLoggedIn){
         // Method untuk handle ketika customer ingin cetak bill
-        User userLoggedIn = User.getCurrentUser();
         while (true) {
             System.out.print("Masukkan Order ID: ");
             String orderId = input.nextLine();
@@ -233,10 +230,8 @@ public class MainMenu {
         }
     }
 
-    public static void handleUpdateStatusPesanan(){
+    public static void handleUpdateStatusPesanan(User userLoggedIn){
         // Method untuk handle ketika customer ingin update status pesanan
-        User userLoggedIn = User.getCurrentUser();
-
         System.out.print("Masukkan Order ID: ");
         String orderId = input.nextLine();
 

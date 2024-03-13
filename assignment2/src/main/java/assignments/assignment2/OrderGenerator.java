@@ -157,7 +157,7 @@ public class OrderGenerator {
         bill += "Restaurant: " + namaRestoran + "\n";
         bill += "Lokasi Pengiriman: " + lokasiUpper + "\n";
         bill += "Status Pemesanan: " + status + "\n";
-        bill += "Pesanan:\n" + pesanan + "\n";
+        bill += "Pesanan:\n" + pesanan;
         bill += "Biaya Ongkos Kirim: Rp " + biayaOngkir + "\n";
         bill += "Total Biaya: Rp " + totalBiaya + "\n";
 

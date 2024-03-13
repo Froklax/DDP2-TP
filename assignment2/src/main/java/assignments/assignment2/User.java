@@ -11,9 +11,6 @@ public class User {
     private String role; 
     private ArrayList<Order> orderHistory;
 
-    // Atribut untuk menyimpan user sekarang yang sedang login
-    private static User currentUser;
-    
     // Constructor class User
     public User(String nama, String nomorTelepon, String email, String lokasi, String role){
        this.nama = nama;
@@ -27,16 +24,6 @@ public class User {
     @Override
     public String toString() {
         return "Selamat Datang " + getNama() + "!";
-    }
-
-    // Method untuk mendapatkan user sekarang yang sedang login
-    public static User getCurrentUser() {
-        return currentUser;
-    }
-
-    // Method untuk set user sekarang yang sedang login
-    public static void setCurrentUser(User user) {
-        currentUser = user;
     }
 
     // Getter dan Setter
