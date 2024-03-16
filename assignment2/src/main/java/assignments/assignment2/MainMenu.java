@@ -220,6 +220,16 @@ public class MainMenu {
         if (restaurant != null) {
             System.out.println("Menu:");
             ArrayList<Menu> menuItems = restaurant.getMenu();
+            // Mengurutkan menu berdasarkan harga menggunakan bubble sort
+            for (int i = 0; i < menuItems.size() - 1; i++) {
+                for (int j = 0; j < menuItems.size() - i - 1; j++) {
+                    if (menuItems.get(j).getHarga() > menuItems.get(j + 1).getHarga()) {
+                        Menu menuSementara = menuItems.get(j);
+                        menuItems.set(j, menuItems.get(j + 1));
+                        menuItems.set(j + 1, menuSementara);
+                    }
+                }
+            }
             // Mencetak menu restoran
             for (int i = 0; i < menuItems.size(); i++) {
                 Menu item = menuItems.get(i);
@@ -251,9 +261,6 @@ public class MainMenu {
             if ("Selesai".equalsIgnoreCase(status) && !order.isOrderFinished()) {
                 order.setOrderFinished(true);
                 System.out.println("Status pesanan dengan ID " + orderId + " berhasil diupdate!");
-            } else if ("Not Finished".equalsIgnoreCase(status) && order.isOrderFinished()) {
-                order.setOrderFinished(false);
-                System.out.println("Status pesanan dengan ID " + orderId + " berhasil diupdate!");
             } else {
                 System.out.println("Status pesanan dengan ID " + orderId + " tidak berhasil diupdate!");
             }
@@ -270,6 +277,18 @@ public class MainMenu {
 
             // Mengecek apakah nama restoran minimal 4 karakter
             if(namaRestoran.length() < 4) {
+                System.out.println("Nama Restoran tidak valid!\n");
+                continue;
+            }
+
+            // Mengecek apakah nama restoran hanya terdiri dari spasi
+            if(namaRestoran.isBlank()) {
+                System.out.println("Nama Restoran tidak valid!\n");
+                continue;
+            }
+
+            // Mengecek apakah nama restoran memiliki spasi berlebihan
+            if(namaRestoran.strip().contains("  ")) {
                 System.out.println("Nama Restoran tidak valid!\n");
                 continue;
             }
