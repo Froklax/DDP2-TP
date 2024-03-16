@@ -120,7 +120,7 @@ public class OrderGenerator {
 
 
     /*
-     * Method ini digunakan untuk membuat bill
+     * Method ini digunakan untuk membuat bill (telah di modify untuk assignment2)
      * dari order id dan lokasi
      */
     public static String generateBill(String OrderID, String namaRestoran, String lokasi, String status, String pesanan, double biayaPesanan){

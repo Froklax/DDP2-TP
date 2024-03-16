@@ -378,7 +378,7 @@ public class MainMenu {
                 }
             }
 
-            // Jika restoran tidak ditemukan, balik ke input awal loop
+            // Jika restoran tidak ditemukan, maka balik ke input awal loop
             System.out.println("Restoran tidak terdaftar pada sistem.\n");
         }
     }
