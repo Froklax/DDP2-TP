@@ -2,11 +2,8 @@ package assignments.assignment2;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-/*
-* Karena terdapat error saat import dari assignments.assignment1,
-* maka saya menaruh OrderGenerator.java di assignments.assignment2
-*/
-import static assignments.assignment2.OrderGenerator.*;
+
+import static assignments.assignment1.OrderGenerator.*;
 
 public class MainMenu {
     private static final Scanner input = new Scanner(System.in);

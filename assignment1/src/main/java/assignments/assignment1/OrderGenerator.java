@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class OrderGenerator {
     private static final Scanner input = new Scanner(System.in);
 
-    /* 
+    /*
      * Method  ini untuk menampilkan menu
      */
     public static void showMenu(){
@@ -47,11 +47,11 @@ public class OrderGenerator {
                 }
             }
         }
-        
+
         String checksum = "";
         // Menghitung modulo 36 dari checksum
         int sisaChecksum1 = checksum1 % 36;
-        // Menambahkan checksum ke ID pesanan 
+        // Menambahkan checksum ke ID pesanan
         if (sisaChecksum1 < 10) {
             checksum += Integer.toString(sisaChecksum1);
         } else { // Reverse assignment ke dalam code 39 character set
@@ -67,7 +67,7 @@ public class OrderGenerator {
         // Mengembalikan checksum
         return checksum;
     }
-    
+
     /*
      * Method ini digunakan untuk membuat ID
      * dari nama restoran, tanggal order, dan nomor telepon
@@ -82,7 +82,7 @@ public class OrderGenerator {
                 idNamaRestoran +=  Character.toUpperCase(charNamaRestoran);
             }
         }
-        
+
         // Menghapus karakter '/' dari tanggal
         String idTanggal = "";
         for (int i = 0; i < tanggalOrder.length(); i++) {
@@ -91,14 +91,14 @@ public class OrderGenerator {
                 idTanggal += charTanggalOrder;
             }
         }
-        
+
         // Menghitung jumlah dari digit dalam nomor telepon
         int sumNoTelepon = 0;
         for (int i = 0; i < noTelepon.length(); i++) {
             int digit = Character.getNumericValue(noTelepon.charAt(i));
             sumNoTelepon += digit;
         }
-        
+
         // Menghitung hasil modulo 100 dari hasil perjumlahan noTelepon
         int idTelepon = sumNoTelepon % 100;
         String strIdTelepon;
@@ -123,23 +123,25 @@ public class OrderGenerator {
      * Method ini digunakan untuk membuat bill
      * dari order id dan lokasi
      */
-    public static String generateBill(String OrderID, String lokasi){
-        String biayaOngkir;
+    public static String generateBill(String OrderID, String namaRestoran, String lokasi, String status, String pesanan, double biayaPesanan){
+        int biayaOngkir;
         String lokasiUpper = lokasi.toUpperCase();
         // Menghitung biaya ongkir berdasarkan lokasi
         if (lokasiUpper.equals("P")) {
-            biayaOngkir = "10.000";
+            biayaOngkir = 10000;
         } else if (lokasiUpper.equals("U")) {
-            biayaOngkir = "20.000";
+            biayaOngkir = 20000;
         } else if (lokasiUpper.equals("T")) {
-            biayaOngkir = "35.000";
+            biayaOngkir = 35000;
         } else if (lokasiUpper.equals("S")) {
-            biayaOngkir = "40.000";
+            biayaOngkir = 40000;
         } else if (lokasiUpper.equals("B")) {
-            biayaOngkir = "60.000";
+            biayaOngkir = 60000;
         } else {
             return null;
         }
+
+        double totalBiaya = biayaPesanan + biayaOngkir;;
 
         // Mengambil tanggal dari OrderID dan memformatnya
         String tanggal = OrderID.substring(4, 12);
@@ -147,13 +149,17 @@ public class OrderGenerator {
         LocalDate localDate = LocalDate.parse(tanggal, formatter);
         DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String tanggalFormatted = localDate.format(outputFormatter);
-        
+
         // Menghasilkan bill sesuai ketentuan
         String bill = "Bill:\n";
         bill += "Order ID: " + OrderID + "\n";
         bill += "Tanggal Pemesanan: " + tanggalFormatted + "\n";
+        bill += "Restaurant: " + namaRestoran + "\n";
         bill += "Lokasi Pengiriman: " + lokasiUpper + "\n";
+        bill += "Status Pemesanan: " + status + "\n";
+        bill += "Pesanan:\n" + pesanan;
         bill += "Biaya Ongkos Kirim: Rp " + biayaOngkir + "\n";
+        bill += "Total Biaya: Rp " + totalBiaya + "\n";
 
         return bill;
     }
@@ -165,7 +171,7 @@ public class OrderGenerator {
             System.out.println("---------------------------------");
             System.out.print("Pilihan menu: ");
             int pilihanMenu = Integer.valueOf(input.nextLine());
-        
+
             if (pilihanMenu == 1) {
                 while (true) {
                     System.out.print("Nama Restoran: ");
@@ -175,7 +181,7 @@ public class OrderGenerator {
                         System.out.print("Nama Restoran: ");
                         namaRestoran = input.nextLine();
                     }
-                
+
                     // Input untuk tanggal pemesanan
                     String tanggalPemesanan;
                     System.out.printf("Tanggal Pemesanan: ");
@@ -184,7 +190,7 @@ public class OrderGenerator {
                         System.out.println("Tanggal Pemesanan dalam format DD/MM/YYYY!\n");
                         continue;
                     }
-                    
+
                     System.out.print("No. Telpon: ");
                     String noTelpon = input.nextLine();
                     boolean allDigits = true;
@@ -206,18 +212,18 @@ public class OrderGenerator {
                         System.out.println("Harap masukkan nomor telepon dalam bentuk bilangan bulat positif.\n");
                         continue;
                     }
-                }    
-                
+                }
+
             } else if (pilihanMenu == 2) {
                 // Panggil fungsi untuk menghasilkan tagihan
-                while (true) {  
+                while (true) {
                     System.out.print("Order ID: ");
                     String order = input.nextLine();
                     // Mengecek apakah panjang Order ID kurang dari 16 karakter
                     if (order.length() < 16) {
                         System.out.println("Order ID minimal 16 karakter\n");
                         continue;
-                    // Mengecek apakah Order ID ada atau tidak dalam daftar Order ID yang telah dihasilkan
+                        // Mengecek apakah Order ID ada atau tidak dalam daftar Order ID yang telah dihasilkan
                     } else if (!order.substring(0, 4).matches("[A-Z]{4}") || !order.substring(4, 12).matches("\\d{8}")) {
                         System.out.println("Silahkan masukkan Order ID yang valid!\n");
                         continue;
@@ -229,20 +235,6 @@ public class OrderGenerator {
                         System.out.println("Silahkan masukkan Order ID yang valid!\n");
                         continue;
                     }
-
-                    System.out.print("Lokasi Pengiriman: ");
-                    String lokasi = input.nextLine();
-                    // Menghasilkan bill berdasarkan Order ID dan lokasi pengiriman
-                    String bill = generateBill(order, lokasi);
-                    // Memeriksa apakah lokasi pengiriman ada dalam jangkauan
-                    if (bill == null) {
-                        System.out.println("Harap masukkan lokasi pengiriman yang ada pada jangkauan!\n");
-                        continue;
-                    }
-                    // Cetak bill
-                    System.out.println("\n" + bill);
-                    System.out.println("---------------------------------");
-                    break;
                 }
             } else if (pilihanMenu == 3) { // Exit dari menu
                 System.out.println("Terima kasih telah menggunakan DepeFood!");
@@ -250,7 +242,7 @@ public class OrderGenerator {
             } else {
                 System.out.println("Pilihan menu tidak valid. Silakan coba lagi.\n");
                 continue;
-            } 
+            }
         }
-    }    
+    }
 }
