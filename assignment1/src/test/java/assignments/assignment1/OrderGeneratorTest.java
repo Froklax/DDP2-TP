@@ -19,7 +19,7 @@ public class OrderGeneratorTest {
                 "Status Pemesanan: Selesai\n" + // Ganti dengan status pesanan yang sesuai
                 "Pesanan:\n" + "1. Pisang 20000\n" +
                 "Biaya Ongkos Kirim: Rp " + 40000 + "\n" +
-                "Total Biaya: Rp " + (20000.0 + 40000.0) + "\n";
+                "Total Biaya: Rp " + (20000 + 40000) + "\n";
         assertEquals(solution, OrderGenerator.generateBill("HOLY1802202453C3", "Holycow!", "s", "Selesai", "1. Pisang 20000\n", 20000.0));
     }
 }

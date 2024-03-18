@@ -241,7 +241,6 @@ public class OrderGenerator {
                 break;
             } else {
                 System.out.println("Pilihan menu tidak valid. Silakan coba lagi.\n");
-                continue;
             }
         }
     }
