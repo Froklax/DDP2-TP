@@ -159,7 +159,7 @@ public class OrderGenerator {
         bill += "Status Pemesanan: " + status + "\n";
         bill += "Pesanan:\n" + pesanan;
         bill += "Biaya Ongkos Kirim: Rp " + biayaOngkir + "\n";
-        bill += "Total Biaya: Rp " + totalBiaya + "\n";
+        bill += "Total Biaya: Rp " + (int) totalBiaya + "\n";
 
         return bill;
     }

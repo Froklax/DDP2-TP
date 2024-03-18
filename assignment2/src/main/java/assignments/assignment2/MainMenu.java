@@ -118,6 +118,24 @@ public class MainMenu {
                 continue;
             }
 
+            boolean tanggalValid = true;
+            // Memisahkan tanggal menjadi hari, bulan, dan tahun
+            String[] bagianTanggal = tanggalOrder.split("/");
+            // Mengecek apakah setiap bagian hanya berisi angka
+            for (String bagian : bagianTanggal) {
+                for (char karakter : bagian.toCharArray()) {
+                    if (!Character.isDigit(karakter)) {
+                        tanggalValid = false;
+                        break;
+                    }
+                }
+            }
+
+            if (!tanggalValid) {
+                System.out.println("Masukkan tanggal dengan angka (tidak ada huruf dan simbol)!\n");
+                continue;
+            }
+
             System.out.print("Jumlah Pesanan: ");
             int jumlahPesanan = Integer.parseInt(input.nextLine());
 
@@ -184,7 +202,7 @@ public class MainMenu {
                 String pesanan = "";
                 // Mengambil pesanan user
                 for (Menu item : order.getItems()) {
-                    pesanan += "- " + item.getNamaMakanan() + " " + item.getHarga() + "\n";
+                    pesanan += "- " + item.getNamaMakanan() + " " + (int) item.getHarga() + "\n";
                 }
 
                 // Mendapatkan nama restoran dan biaya pesanan
@@ -230,7 +248,7 @@ public class MainMenu {
             // Mencetak menu restoran
             for (int i = 0; i < menuItems.size(); i++) {
                 Menu item = menuItems.get(i);
-                System.out.println((i+1) + ". " + item.getNamaMakanan() + " " + item.getHarga());
+                System.out.println((i + 1) + ". " + item.getNamaMakanan() + " " + (int) item.getHarga());
             }
         } else {
             System.out.println("Restoran tidak terdaftar pada sistem.");
