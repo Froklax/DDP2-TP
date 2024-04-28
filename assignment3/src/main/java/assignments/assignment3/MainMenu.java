@@ -14,7 +14,7 @@ import assignments.assignment3.systemCLI.CustomerSystemCLI;
 public class MainMenu {
     private final Scanner input;
     private final LoginManager loginManager;
-    public static ArrayList<Restaurant> restoList = new ArrayList<Restaurant>();;
+    public static ArrayList<Restaurant> restoList = new ArrayList<Restaurant>();
     private static ArrayList<User> userList;
 
 
