@@ -324,7 +324,7 @@ public class MainMenu {
             }
 
             // Membuat new restaurant tapi belum add ke list dulu
-            Restaurant newRestaurant = new Restaurant(namaRestoran);
+            Restaurant newRestaurant = new Restaurant(namaRestoran, 0);
 
             System.out.print("Jumlah Makanan: ");
             int jumlahMakanan = Integer.parseInt(input.nextLine());

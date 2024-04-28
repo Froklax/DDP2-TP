@@ -4,12 +4,15 @@ import java.util.ArrayList;
 public class Restaurant {
     // Atribut class Restaurant
     private String nama; 
-    private ArrayList<Menu> menu; 
+    private ArrayList<Menu> menu;
+
+    private long saldo;
 
     // Constructor class Restaurant
-    public Restaurant(String nama){
+    public Restaurant(String nama, long saldo){
         this.nama = nama;
         this.menu = new ArrayList<>();
+        this.saldo = saldo;
     }
 
     @Override
