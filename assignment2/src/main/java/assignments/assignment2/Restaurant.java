@@ -36,4 +36,12 @@ public class Restaurant {
     public void setMenu(ArrayList<Menu> menu) {
         this.menu = menu;
     }
+
+    public long getSaldo() {
+        return this.saldo;
+    }
+
+    public void setSaldo(long saldo) {
+        this.saldo = saldo;
+    }
 }

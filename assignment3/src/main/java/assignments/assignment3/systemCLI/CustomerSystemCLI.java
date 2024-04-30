@@ -284,6 +284,11 @@ public class CustomerSystemCLI extends UserSystemCLI {
                     // Menghitung dan set saldo sekarang user
                     long saldoSekarang = userLoggedIn.getSaldo() - userLoggedIn.getPayment().processPayment(totalBiaya);
                     userLoggedIn.setSaldo(saldoSekarang);
+
+                    // Menghitung dan set saldo sekarang restaurant
+                    long saldoRestaurant = order.getRestaurant().getSaldo() + userLoggedIn.getPayment().processPayment(totalBiaya);
+                    order.getRestaurant().setSaldo(saldoRestaurant);
+
                     System.out.println("\nBerhasil Membayar Bill sebesar Rp " + totalBiaya + " dengan biaya transaksi sebesar Rp " + biayaTransaksi + ".");
                     break;
                 } else {
