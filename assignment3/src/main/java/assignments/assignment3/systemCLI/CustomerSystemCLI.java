@@ -23,9 +23,7 @@ public class CustomerSystemCLI extends UserSystemCLI {
             case 3 -> handleLihatMenu();
             case 4 -> handleBayarBill(userLoggedIn);
             case 5 -> handleCekSaldo(userLoggedIn);
-            // Disini saya menambahkan fitur untuk update status pesanan dan keluar menjadi pilihan 7
-            case 6 -> handleUpdateStatusPesanan(userLoggedIn);
-            case 7 -> {
+            case 6 -> {
                 return false;
             }
             default -> System.out.println("Perintah tidak diketahui, silakan coba kembali");
@@ -43,9 +41,7 @@ public class CustomerSystemCLI extends UserSystemCLI {
         System.out.println("3. Lihat Menu");
         System.out.println("4. Bayar Bill");
         System.out.println("5. Cek Saldo");
-        // Disini saya menambahkan pesan update status pesanan ke menu
-        System.out.println("6. Update Status Pesanan");
-        System.out.println("7. Keluar");
+        System.out.println("6. Keluar");
         System.out.println("--------------------------------------------");
         System.out.print("Pilihan menu: ");
     }
@@ -253,6 +249,12 @@ public class CustomerSystemCLI extends UserSystemCLI {
             }
 
             if (order != null) {
+                // Jika status order sudah selesai
+                if (order.getStatus().equals("Selesai")) {
+                    System.out.println("Pesanan dengan ID ini sudah lunas!");
+                    return;
+                }
+
                 String pesanan = "";
                 // Mengambil pesanan user
                 for (Menu item : order.getItems()) {
@@ -276,6 +278,11 @@ public class CustomerSystemCLI extends UserSystemCLI {
 
                 // Mengecek apakah metode pembayaran valid
                 if ((pilihanPembayaran == 1 && userLoggedIn.getPayment() instanceof CreditCardPayment) || (pilihanPembayaran == 2 && userLoggedIn.getPayment() instanceof DebitPayment)) {
+                    // Jika harga pesanan melebihi saldo debit
+                    if (pilihanPembayaran == 2 && userLoggedIn.getPayment().processPayment(totalBiaya) > userLoggedIn.getSaldo()) {
+                        System.out.println("Saldo tidak mencukupi mohon menggunakan metode pembayaran yang lain\n");
+                        continue;
+                    }
                     // Menghitung biaya transaksi
                     long biayaTransaksi = 0;
                     if (userLoggedIn.getPayment() instanceof CreditCardPayment) {
@@ -290,6 +297,8 @@ public class CustomerSystemCLI extends UserSystemCLI {
                     order.getRestaurant().setSaldo(saldoRestaurant);
 
                     System.out.println("\nBerhasil Membayar Bill sebesar Rp " + totalBiaya + " dengan biaya transaksi sebesar Rp " + biayaTransaksi + ".");
+                    // Set status pesanan menjadi selesai
+                    order.setOrderFinished(true);
                     break;
                 } else {
                     System.out.println("User belum memiliki metode pembayaran ini!\n");
