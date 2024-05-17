@@ -1,6 +1,6 @@
 package assignments.assignment3.payment;
 
 public interface DepeFoodPaymentSystem {
-    // Method interface DepeFoodPaymentSystem
-    long processPayment(long amount);
+
+    public long processPayment(long saldo, long amount) throws Exception;
 }
